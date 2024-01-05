@@ -1,0 +1,94 @@
+apiVersion: manage.robin.io/v1
+kind: RobinCluster
+metadata:
+  name: robin
+  namespace: robinio
+  labels:
+    app.kubernetes.io/instance: robin
+    app.kubernetes.io/managed-by: robin.io
+    app.kubernetes.io/name: robin
+spec:
+  image_robin: robineng/robinimg:5.4.8-154
+  k8s_provider: gke # possible values openshift,eks,gke,aks,iks,rke,upstream
+  host_type: physical # possible values physical,ec2,gcp,azure,ibm,anthos
+  namespace: robinio
+  source: spec
+  image_ubbagent: robineng/ubbagent:5.4.4-ent-1
+  image_nfs_server: robineng/nfs-server:v1
+  image_puller: robineng/robin-image-puller:v1
+  # image_registry_path: IMAGE_REGISTRY_PATH
+  image_pull_secret: mgcred
+  options:
+    # robinlog_dir: ROBINLOG_DIR # Path where robin logs should be stored on the host, default: /home/robinds
+    # robincrash_dir: ROBINCRASH_DIR # Path where robin crash are stored on the host, default: /home/robinds
+    # robinds_dir: ROBINDS_DIR # Path where robin database will be storaed on the host, default: /home/robinds
+    # cloud_cred_secret: CLOUD_CRED_SECRET
+    # robin_devmode: "true"
+    # generate_password: "true"
+    # vault_addr: "VAULT_ADDR" # VAULT_CONFIG
+    # vault_robin_keys_path: "VAULT_ROBIN_KEYS_PATH" # VAULT_CONFIG
+    # vault_token: "VAULT_TOKEN" # VAULT_CONFIG
+    # vault_skip_verify: "VAULT_SKIP_VERIFY" # VAULT_CONFIG
+    # vault_namespace: "VAULT_robinio" # VAULT_CONFIG
+    # ibm_iam_endpoint: IBM_IAM_EP
+    # ibm_iaas_base_endpoint: IBM_IAAS_EP
+    # ibm_containers_base_endpoint: IBM_CONTAINERS_BASE_EP
+    # kms_endpoint: "KMS_ENDPOINT" # IBMPROTECT_CONFIG
+    # ibmprotect_instance_id: "IBMPROTECT_INSTANCE_ID" # IBMPROTECT_CONFIG
+    # http_proxy: HTTP_PROXY
+    # https_proxy: HTTPS_PROXY
+    # ftp_proxy: FTP_PROXY
+    # proxy_certificate: PROXY_CERTIFICATE_PATH
+    # gcp_key_secret: GCP_KEY_FILE
+    # skip_k8s_auto_registration: "SKIP_K8S_AUTO_REGISTRATION"
+    # auto_move_disks: "AUTO_MOVE_DISKS"
+    # auto_add_storage_disks: "AUTO_ADD_STORAGE_DISKS"
+    # disk_discovery: "DISK_DISCOVERY"
+    # pv_folder_path: "PV_FOLDER_PATH"
+    # pv_sc_name: "PV_SC_NAME"
+    # pv_labels: "PV_LABELS"     # Should be robin.io/enabled:true
+    skip_setup_iptables: "1" # If this option is set, robin will not open required ports
+    # csi_attacher_max_backoff: "ATTACHER_BACKOFF"
+    # storage_encryption_enabled: "1"
+    # fast_failover_enabled: "0"
+    # nfs_watchdog_enabled: "1"
+  patroni_options:
+    # volume_size: "VOLUME_SIZE" # default value 10GB
+    # storage_class: "STORAGE_CLASS" # default value local-storage
+    # patroni_dir: "PATRONI_DIR" # default value /home/robinds/var/lib/pgsql/patroni
+    # cpu_requests: "CPU_REQUESTS" # default 100m
+    # cpu_limits: "CPU_LIMITS" # default 500m
+    # memory_requests: "MEMORY_REQUESTS" # default 4G
+    # memory_limits: "MEMORY_LIMITS" # default 4G
+    skip_postgres_operator: "1"
+  # storage_disks: STORAGE_DISKS
+  # node_selector:
+    # NODE_SELECTOR
+  # master_node_selector:
+    # MASTER_NODE_SELECTOR
+  # patroni_node_selector:
+    # PATRONI_NODE_SELECTOR
+  # tolerations:
+    # DS_TOLERATIONS
+  # patroni_tolerations:
+    # PATRONI_TOLERATIONS
+  # master_tolerations:
+    # MASTER_TOLERATIONS
+  # kms: k8s/google/vault/ibmprotect
+  # kms_keyring: "KEYRING_NAME"
+  # ports:
+    # SERVER_REST_PORT: 29442
+  # requests:
+    # cpu: "2"
+    # memory: "2Gi"
+  # limits:
+    # cpu: "2"
+    # memory: "2Gi"
+  # images:
+    # csi-attacher: k8s.gcr.io/sig-storage/csi-attacher:v4.3.0
+    # csi-provisioner: k8s.gcr.io/sig-storage/csi-provisioner:v3.5.0
+    # csi-node-driver-registrar: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.8.0
+    # livenessprobe: k8s.gcr.io/sig-storage/livenessprobe:v2.10.0
+    # csi-resizer: k8s.gcr.io/sig-storage/csi-resizer:v1.8.0
+    # csi-snapshotter: k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.2
+    # snapshot-controller: k8s.gcr.io/sig-storage/snapshot-controller:v6.2.2
