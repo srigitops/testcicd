@@ -827,7 +827,7 @@ spec:
       annotations:
         productID: 694dbfaf-3351-483d-b0d1-4d576d123fc7
         productName: ROBIN_PRODUCT_NAME
-        productVersion: 5.4.8-172
+        productVersion: 5.4.6-102
       labels:
         name: robin-operator
         app.kubernetes.io/instance: robin
@@ -857,7 +857,7 @@ spec:
       containers:
         - name: robin-operator
           # Replace this with the built image name
-          image: robineng/robin-operator:5.4.8-154
+          image: robineng/robin-operator:5.4.6-102
           readinessProbe:
             exec:
               command:
