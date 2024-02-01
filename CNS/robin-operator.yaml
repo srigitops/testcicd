@@ -827,7 +827,7 @@ spec:
       annotations:
         productID: 694dbfaf-3351-483d-b0d1-4d576d123fc7
         productName: ROBIN_PRODUCT_NAME
-        productVersion: 5.4.8-193
+        productVersion: 5.4.8-237
       labels:
         name: robin-operator
         app.kubernetes.io/instance: robin
