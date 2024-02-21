@@ -8,13 +8,13 @@ metadata:
     app.kubernetes.io/managed-by: robin.io
     app.kubernetes.io/name: robin
 spec:
-  image_robin: gcr.io/robinio-public/robin-storage/robinimg:5.4.6-102
+  image_robin: gcr.io/robinio-public/robin-storage/robinimg:5.4.8-275
   k8s_provider: gke # possible values openshift,eks,gke,aks,iks,rke,upstream
   host_type: physical # possible values physical,ec2,gcp,azure,ibm,anthos
   namespace: robinio
   reporting_secret: enterprise-sds-by-robin-license-468862
   source: spec
-  image_ubbagent: gcr.io/robinio-public/robin-storage/ubbagent:5.4.4-ent-1
+  image_ubbagent: gcr.io/robinio-public/robin-storage/ubbagent:5.4.8-ent-1
   image_nfs_server: gcr.io/robinio-public/robin-storage/nfs-server:v1
   image_puller: gcr.io/robinio-public/robin-storage/robin-image-puller:v1
   # image_registry_path: IMAGE_REGISTRY_PATH
