@@ -1,0 +1,18 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: robin-operator
+  namespace: robinio
+  labels:
+    app.kubernetes.io/instance: robin
+    app.kubernetes.io/managed-by: robin.io
+    app.kubernetes.io/name: robin
+subjects:
+- kind: ServiceAccount
+  name: robin-operator
+  namespace: robinio
+roleRef:
+  kind: Role
+  name: robin-operator
+  apiGroup: rbac.authorization.k8s.io
+

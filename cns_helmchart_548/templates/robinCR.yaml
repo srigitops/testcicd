@@ -1,0 +1,232 @@
+apiVersion: manage.robin.io/v1
+kind: RobinCluster
+metadata:
+  name: robin
+  namespace: robinio
+  labels:
+    app.kubernetes.io/instance: robin
+    app.kubernetes.io/managed-by: robin.io
+    app.kubernetes.io/name: robin
+spec:
+  image_robin: "{{ .Values.repo }}/robinimg:{{ .Values.image.tag | default .Chart.AppVersion }}"
+  k8s_provider: {{ .Values.customResource.k8sProvider }} # possible values openshift,eks,gke,aks,iks,rke,upstream
+  host_type: {{ .Values.customResource.hostType }} # possible values physical,ec2,gcp,azure,ibm,anthos
+  namespace: robinio
+  source: {{ .Values.customResource.source }}
+  image_ubbagent:  "{{ .Values.repo }}/ubbagent:{{ .Values.customResource.imageUbbagentTag }}" 
+  image_nfs_server: "{{ .Values.repo }}/nfs-server:v1" 
+  image_puller:  "{{ .Values.repo }}/robin-image-puller:v1" 
+  {{- if .Values.customResource.imageRegistryPath.enable }}
+  image_registry_path: {{ .Values.customResource.imageRegistryPath.value}} 
+  {{- end }}
+  {{- if .Values.imagePullSecrets.enable }}
+  image_pull_secret: {{ .Values.imagePullSecrets.value }} 
+  {{- end }}
+  options:
+    {{- if .Values.customResource.options.robinlogDir.enable }}
+    robinlog_dir: {{ .Values.customResource.options.robinlogDir.value }} # Path where robin logs should be stored on the host, default: /home/robinds
+    {{- end }}
+    {{- if .Values.customResource.options.robincrashDir.enable }}
+    robincrash_dir: {{ .Values.customResource.options.robincrashDir.value }} # Path where robin crash are stored on the host, default: /home/robinds
+    {{- end }}
+    {{- if .Values.customResource.options.robindsDir.enable }}
+    robinds_dir: {{ .Values.customResource.options.robindsDir.value }} # Path where robin database will be storaed on the host, default: /home/robinds
+    {{- end }}
+    {{- if .Values.customResource.options.cloudCredSecret.enable }}
+    cloud_cred_secret: {{ .Values.customResource.options.cloudCredSecret.value }}
+    {{- end }}
+    {{- if .Values.customResource.options.robinDevmode.enable }}
+    robin_devmode: {{ .Values.customResource.options.robinDevmode.value }}
+    {{- end }}
+    {{- if .Values.customResource.options.generatePassword.enable }}
+    generate_password: "{{ .Values.customResource.options.generatePassword.value }}"
+    {{- end }}
+    {{- if .Values.customResource.options.vaultAddr.enable }}
+    vault_addr: {{ .Values.customResource.options.vaultAddr.value }}  # VAULT_CONFIG
+    {{- end }}
+    {{- if .Values.customResource.options.vaultRobinKeysPath.enable }}
+    vault_robin_keys_path: {{ .Values.customResource.options.vaultRobinKeysPath.value }}  # VAULT_CONFIG
+    {{- end }}
+    {{- if .Values.customResource.options.vaultToken.enable }}
+    vault_token: {{ .Values.customResource.options.vaultToken.value }}  # VAULT_CONFIG
+    {{- end }}
+    {{- if .Values.customResource.options.vaultSkipVerify.enable }}
+    vault_skip_verify: {{ .Values.customResource.options.vaultSkipVerify.value }}  # VAULT_CONFIG
+    {{- end }}
+    {{- if .Values.customResource.options.vaultNamespace.enable }}
+    vault_namespace: {{ .Values.customResource.options.vaultNamespace.value }}  # VAULT_CONFIG
+    {{- end }}
+    {{- if .Values.customResource.options.ibmIamEndpoint.enable }}
+    ibm_iam_endpoint: {{ .Values.customResource.options.ibmIamEndpoint.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.ibmIaasBaseEndpoint.enable }}
+    ibm_iaas_base_endpoint: {{ .Values.customResource.options.ibmIaasBaseEndpoint.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.ibmContainersBaseEndpoint.enable }}
+    ibm_containers_base_endpoint: {{ .Values.customResource.options.ibmContainersBaseEndpoint.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.kmsEndpoint.enable }}
+    kms_endpoint: {{ .Values.customResource.options.kmsEndpoint.value }} # IBMPROTECT_CONFIG
+    {{- end }}
+    {{- if .Values.customResource.options.ibmProtectInstanceId.enable }}
+    ibmprotect_instance_id: {{ .Values.customResource.options.ibmProtectInstanceId.value }} # IBMPROTECT_CONFIG
+    {{- end }}
+    {{- if .Values.customResource.options.httpProxy.enable }}
+    http_proxy: {{ .Values.customResource.options.httpProxy.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.httpsProxy.enable }}
+    https_proxy: {{ .Values.customResource.options.httpsProxy.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.ftpProxy.enable }}
+    ftp_proxy: {{ .Values.customResource.options.ftpProxy.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.proxyCertificate.enable }}
+    proxy_certificate: {{ .Values.customResource.options.proxyCertificate.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.gcpKeySecret.enable }}
+    gcp_key_secret: {{ .Values.customResource.options.gcpKeySecret.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.skipK8sAutoRegistration.enable }}
+    skip_k8s_auto_registration: {{ .Values.customResource.options.skipK8sAutoRegistration.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.autoMoveDisks.enable }}
+    auto_move_disks: {{ .Values.customResource.options.autoMoveDisks.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.autoAddStorageDisks.enable }}
+    auto_add_storage_disks: {{ .Values.customResource.options.autoAddStorageDisks.value }} 
+    {{- end }} 
+    {{- if .Values.customResource.options.diskDiscovery.enable }}
+    disk_discovery: {{ .Values.customResource.options.diskDiscovery.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.pvFolderPath.enable }}
+    pv_folder_path: {{ .Values.customResource.options.pvFolderPath.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.pvScName.enable }}
+    pv_sc_name: {{ .Values.customResource.options.pvScName.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.pvLabels.enable }}
+    pv_labels: {{ .Values.customResource.options.pvLabels.value }} # value Should be robin.io/enabled:true
+    {{- end }}
+    {{- if .Values.customResource.options.skipSetupIptables.enable }}
+    skip_setup_iptables: {{ .Values.customResource.options.skipSetupIptables.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.csiAttacherMaxBackoff.enable }}
+    csi_attacher_max_backoff: {{ .Values.customResource.options.csiAttacherMaxBackoff.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.storageEncryptionEnabled.enable }}
+    storage_encryption_enabled: {{ .Values.customResource.options.storageEncryptionEnabled.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.fastFailoverEnabled.enable }}
+    fast_failover_enabled: {{ .Values.customResource.options.fastFailoverEnabled.value }} 
+    {{- end }}
+    {{- if .Values.customResource.options.nfsWatchdogEnabled.enable }}
+    nfs_watchdog_enabled: {{ .Values.customResource.options.nfsWatchdogEnabled.value }}
+    {{- end }}
+  {{- if .Values.customResource.patroniOptions.enable }}
+  patroni_options: 
+    {{- if .Values.customResource.patroniOptions.volumeSize.enable }}
+    volume_size: {{ .Values.customResource.patroniOptions.volumeSize.value }} 
+    {{- end }}
+    {{- if .Values.customResource.patroniOptions.storageClass.enable }}
+    storage_class: {{ .Values.customResource.patroniOptions.storageClass.value }} 
+    {{- end }}
+    {{- if .Values.customResource.patroniOptions.patroniDir.enable }}
+    patroni_dir: {{ .Values.customResource.patroniOptions.patroniDir.value }} 
+    {{- end }}
+    {{- if .Values.customResource.patroniOptions.cpuRequests.enable }}
+    cpu_requests: {{ .Values.customResource.patroniOptions.cpuRequests.value }} 
+    {{- end }}
+    {{- if .Values.customResource.patroniOptions.cpuLimits.enable }}
+    cpu_limits: {{ .Values.customResource.patroniOptions.cpuLimits.value }} 
+    {{- end }}
+    {{- if .Values.customResource.patroniOptions.memoryRequests.enable }}
+    memory_requests: {{ .Values.customResource.patroniOptions.memoryRequests.value }} 
+    {{- end }}
+    {{- if .Values.customResource.patroniOptions.memoryLimits.enable }}
+    memory_limits: {{ .Values.customResource.patroniOptions.memoryLimits.value }} 
+    {{- end }}
+    {{- if .Values.customResource.patroniOptions.skipPostgresOperator.enable }}
+    skip_postgres_operator: {{ .Values.customResource.patroniOptions.skipPostgresOperator.value }} 
+    {{- end }}
+  {{- end }}
+  {{- if .Values.customResource.storageDisks.enable }}
+  storage_disks: {{ .Values.customResource.storageDisks.value }} 
+  {{- end }}
+  {{- if .Values.customResource.nodeSelector.enable }}
+  node_selector:
+  {{- range $value := .Values.customResource.nodeSelector.value }}
+    {{ $value }}
+  {{- end }}
+  {{- end }}
+  {{- if .Values.customResource.masterNodeSelector.enable }}
+  master_node_selector: 
+  {{- range $value := .Values.customResource.masterNodeSelector.value }}
+    {{ $value }}
+  {{- end }}
+  {{- end }}
+  {{- if .Values.customResource.patroniNodeSelector.enable }}
+  patroni_node_selector: 
+  {{- range $value := .Values.customResource.patroniNodeSelector.value }}
+    {{ $value }}
+  {{- end }}
+  {{- end }}
+  {{- if .Values.customResource.tolerations.enable }}
+  tolerations: 
+  {{- range $value := .Values.customResource.tolerations.value }}
+    {{ $value }}
+  {{- end }}
+  {{- end }}
+  {{- if .Values.customResource.kms.enable }}
+  kms: {{ .Values.customResource.kms.value }} 
+  {{- end }}
+  {{- if .Values.customResource.kmsKeyring.enable }}
+  kms_keyring: {{ .Values.customResource.kmsKeyring.value }} 
+  {{- end }}
+  {{- if .Values.customResource.ports.enable }}
+  ports: 
+    {{- if .Values.customResource.ports.serverRestPort.enable }}
+    SERVER_REST_PORT: {{ .Values.customResource.ports.serverRestPort.value }} 
+    {{- end }}
+  {{- end }}
+  {{- if .Values.customResource.requests.enable }}
+  requests: 
+    {{- if .Values.customResource.requests.cpu.enable }}
+    cpu: {{ .Values.customResource.requests.cpu.value }} 
+    {{- end }}
+    {{- if .Values.customResource.requests.memory.enable }}
+    memory: {{ .Values.customResource.requests.memory.value }} 
+    {{- end }}
+  {{- end }}
+  {{- if .Values.customResource.limits.enable }}
+  limits: 
+    {{- if .Values.customResource.limits.cpu.enable }}
+    cpu: {{ .Values.customResource.limits.cpu.value }} 
+    {{- end }}
+    {{- if .Values.customResource.limits.memory.enable }}
+    memory: {{ .Values.customResource.limits.memory.value }} 
+    {{- end }}
+  {{- end }}
+  {{- if .Values.customResource.images.enable }}
+  images: 
+    {{- if .Values.customResource.images.csiAttacher.enable }}
+    csi-attacher: {{ .Values.customResource.images.csiAttacher.value }} 
+    {{- end }}
+    {{- if .Values.customResource.images.csiProvisioner.enable }}
+    csi-provisioner: {{ .Values.customResource.images.csiProvisioner.value }} 
+    {{- end }}
+    {{- if .Values.customResource.images.csiNodeDriverRegistrar.enable }}
+    csi-node-driver-registrar: {{ .Values.customResource.images.csiNodeDriverRegistrar.value }} 
+    {{- end }}
+    {{- if .Values.customResource.images.livenessprobe.enable }}
+    livenessprobe: {{ .Values.customResource.images.livenessprobe.value }} 
+    {{- end }}
+    {{- if .Values.customResource.images.csiResizer.enable }}
+    csi-resizer: {{ .Values.customResource.images.csiResizer.value }} 
+    {{- end }}
+    {{- if .Values.customResource.images.csiSnapshotter.enable }}
+    csi-snapshotter: {{ .Values.customResource.images.csiSnapshotter.value }} 
+    {{- end }}
+    {{- if .Values.customResource.images.snapshotController.enable }}
+    snapshot-controller: {{ .Values.customResource.images.snapshotController.value }} 
+    {{- end }}
+  {{- end }}

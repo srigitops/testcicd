@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    robin.io/domain: ROBIN
+    app.kubernetes.io/instance: robin
+    app.kubernetes.io/managed-by: robin.io
+    app.kubernetes.io/name: robin
+    robin.io/control-plane: 'True'
+  name: robinio
+---
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    robin.io/domain: ROBIN
+    app.kubernetes.io/instance: robin
+    app.kubernetes.io/managed-by: robin.io
+    app.kubernetes.io/name: robin
+  name: robin-admin
+
+---
+

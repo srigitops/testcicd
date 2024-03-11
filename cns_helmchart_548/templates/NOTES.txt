@@ -1,0 +1,44 @@
+CHART NAME: {{ .Chart.Name }}
+CHART VERSION: {{ .Chart.Version }}
+APP VERSION: {{ .Chart.AppVersion }}
+
+** Please be patient while the  Robin Cloud Native Storage Helm chart is being deployed **
+
+For more Information about the Robin CNS features, please refer to docs.robin.io/storage
+
+
+Get the list of robinio  pods by executing:
+
+  kubectl get pods --namespace robinio
+
+
+To check the status robin robincluster run the below command,  Ensure all the robinds pods are READY ONLINE:
+
+  kubectl describe robincluster -n  robinio
+
+
+To connect to Robin Admin Pod , Use the connect command: 
+kubectl  describe robincluster robin|grep   "connect_command"
+
+
+In order to Activate the licenses, Share the licence Info output to Robin Account Manager::
+
+   login to Admin Pod ; 
+    robin login admin --password Robin123
+    robin license info
+
+For Additional Information, Refer to Robin Documentation -  https://docs.robin.io/storage
+
+
+To uninstall the chart:
+
+  helm uninstall {{ .Release.Name }}
+
+After uninstallation, please remember to delete namespaces labeled with robin.io/domain=ROBIN.
+
+**************  
+   
+
+
+
+

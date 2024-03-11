@@ -1,0 +1,95 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: robin-operator
+  namespace: robinio
+  labels:
+    app.kubernetes.io/instance: robin
+    app.kubernetes.io/managed-by: robin.io
+    app.kubernetes.io/name: robin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: robin-operator
+  template:
+    metadata:
+      annotations:
+        productID: 694dbfaf-3351-483d-b0d1-4d576d123fc7
+        productName: ROBIN_PRODUCT_NAME
+        productVersion: {{ .Values.image.tag }}
+      labels:
+        name: robin-operator
+        app.kubernetes.io/instance: robin
+        app.kubernetes.io/managed-by: robin.io
+        app.kubernetes.io/name: robin
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+      {{- if .Values.nodeSelector.enable }}
+      nodeSelector:
+      {{- range $value := .Values.nodeSelector.value }}
+        {{ $value }}
+      {{- end }}
+      {{- end }}
+      serviceAccountName: robin-operator
+      hostIPC: false
+      hostNetwork: false
+      hostPID: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+      {{- if .Values.imagePullSecrets.enable }}
+      image_pull_secret: {{ .Values.imagePullSecrets.value }} 
+      {{- end }}
+      containers:
+        - name: robin-operator
+          # Replace this with the built image name
+          image:  "{{ .Values.repo }}/robin-operator:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          readinessProbe:
+            exec:
+              command:
+              - id
+            initialDelaySeconds: 2
+            periodSeconds: 2
+          livenessProbe:
+            failureThreshold: 5
+            exec:
+              command:
+              - id
+            initialDelaySeconds: 30
+            timeoutSeconds: 3
+            periodSeconds: 30
+          resources:
+            limits:
+              cpu: 1
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 200Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: false
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "robin-operator"

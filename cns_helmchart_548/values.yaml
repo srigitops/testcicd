@@ -1,0 +1,240 @@
+# Default values for srihelm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+# robin operator deployment 
+image:
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "5.4.8-276"
+
+nodeSelector:  # confirm with Sricharan
+  enable: false
+  value: 
+    - SELECTOR-1
+    - SELECTOR-2
+
+repo: "gcr.io/robinio-public/robin-storage"   # "robineng"  #  "gcr.io/robinio-public/robin-storage" # "robinsys"
+imagePullSecrets: 
+  enable: false
+  value: "regcred"
+
+
+
+# Custom Resource Values 
+
+customResource: 
+  metadata: 
+    name: "robin"
+  imageUbbagentTag: "ubbagent:5.4.8-ent-1" # 
+  k8sProvider: gke
+  hostType: physical # possible values physical,ec2,gcp,azure,ibm,anthos
+  source: "spec"
+  imageRegistryPath: 
+    enable: false
+    value: "regcred"
+  images:
+    enable: false
+    csiAttacher:
+      enable: false
+      value: "k8s.gcr.io/sig-storage/csi-attacher:v4.3.0"
+    csiProvisioner: 
+      enable: false
+      value: "k8s.gcr.io/sig-storage/csi-provisioner:v3.5.0"
+    csiNodeDriverRegistrar: 
+      enable: false
+      value: "k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.8.0"
+    livenessprobe: 
+      enable: false
+      value: "k8s.gcr.io/sig-storage/livenessprobe:v2.10.0"
+    csiResizer: 
+      enable: false
+      value: "k8s.gcr.io/sig-storage/csi-resizer:v1.8.0"
+    csiSnapshotter: 
+      enable: false
+      value: "k8s.gcr.io/sig-storage/csi-snapshotter:v6.2.2"
+    snapshotController: 
+      enable: false
+      value: "k8s.gcr.io/sig-storage/snapshot-controller:v6.2.2"
+  options: 
+    robinlogDir: 
+      # Path where robin logs should be stored on the host, default: /home/robinds
+      enable: false
+      value: ROBINLOG_DIR
+    robincrashDir: 
+      # Path where robin crash are stored on the host, default: /home/robinds
+      enable: false
+      value: ROBINCRASH_DIR
+    robindsDir: 
+       # Path where robin database will be storaed on the host, default: /home/robinds
+      enable: false 
+      value: ROBINDS_DIR
+    cloudCredSecret: 
+      enable: false
+      value: CLOUD_CRED_SECRET
+    robinDevmode: 
+      enable: false
+      value: "true"
+    generatePassword: 
+      enable: false
+      value: "true"  #true or false
+    vaultAddr: # VAULT_CONFIG
+      enable: false
+      value: "VAULT_ADDR"
+    vaultRobinKeysPath:  # VAULT_CONFIG
+      enable: false
+      value: "VAULT_ROBIN_KEYS_PATH"
+    vaultToken: # VAULT_CONFIG
+      enable: false
+      value: "VAULT_TOKEN" 
+    vaultSkipVerify:  # VAULT_CONFIG
+      enable: false
+      value: "VAULT_SKIP_VERIFY"
+    vaultNamespace:  # VAULT_CONFIG
+      enable: false
+      value: "VAULT_robinio"
+    ibmIamEndpoint: 
+      enable: false
+      value: "IBM_IAM_EP"
+    ibmIaasBaseEndpoint: 
+      enable: false
+      value: "IBM_IAAS_EP"
+    ibmContainersBaseEndpoint: 
+      enable: false
+      value: "IBM_CONTAINERS_BASE_EP"
+    kmsEndpoint: # IBMPROTECT_CONFIG
+      enable: false
+      value: "KMS_ENDPOINT"
+    ibmProtectInstanceId: # IBMPROTECT_CONFIG
+      enable: false
+      value: "IBMPROTECT_INSTANCE_ID"
+    httpProxy: 
+      enable: false
+      value: "HTTP_PROXY"
+    httpsProxy: 
+      enable: false
+      value: "HTTPS_PROXY"
+    ftpProxy: 
+      enable: false
+      value: "FTP_PROXY"
+    proxyCertificate: 
+      enable: false
+      value: "PROXY_CERTIFICATE_PATH"
+    gcpKeySecret: 
+      enable: false
+      value: "GCP_KEY_FILE"
+    skipK8sAutoRegistration: 
+      enable: false
+      value: "SKIP_K8S_AUTO_REGISTRATION"
+    autoMoveDisks: 
+      enable: false
+      value: "AUTO_MOVE_DISKS"
+    autoAddStorageDisks: 
+      enable: false
+      value:  "AUTO_ADD_STORAGE_DISKS"
+    diskDiscovery: 
+      enable: false
+      value: "DISK_DISCOVERY"
+    pvFolderPath: 
+      enable: false
+      value: "PV_FOLDER_PATH"
+    pvScName: 
+      enable: false
+      value: "PV_SC_NAME"
+    pvLabels:  # value Should be robin.io/enabled:true
+      enable: false
+      value:  "PV_LABELS"  
+    skipSetupIptables: # If this option is set, robin will not open required ports
+      enable: false
+      value: "1" 
+    csiAttacherMaxBackoff: 
+      enable: false
+      value:  "ATTACHER_BACKOFF"
+    storageEncryptionEnabled:
+      enable: false 
+      value: "1"
+    fastFailoverEnabled: 
+      enable: false 
+      value: "0"
+    nfsWatchdogEnabled:
+      enable: false 
+      value: "1"
+  patroniOptions: 
+    enable: false 
+    volumeSize: 
+      enable: false 
+      value: "VOLUME_SIZE" # default value 10GB
+    storageClass: 
+      enable: false 
+      value: "STORAGE_CLASS" # default value local-storage 
+    patroniDir: 
+      enable: false 
+      value:  "PATRONI_DIR" # default value /home/robinds/var/lib/pgsql/patroni
+    cpuRequests: 
+      enable: false 
+      value:  "CPU_REQUESTS" # default 100m
+    cpuLimits: 
+      enable: false 
+      value: "CPU_LIMITS" # default 500m
+    memoryRequests: 
+      enable: false 
+      value:  "MEMORY_REQUESTS" # default 4G
+    memoryLimits: 
+      enable: false 
+      value:  "MEMORY_LIMITS" # default 4G
+    #This parameter will skip the postgres operator from being installed during the CNS install, The default value is 0. 
+    skipPostgresOperator: 
+      enable: false 
+      value:  "1" 
+  storageDisks: 
+    enable: false
+    value: STORAGE_DISKS
+  nodeSelector: 
+    enable: false
+    value: 
+      - NODE_SELECTOR_1 # key: value
+      - NODE_SELECTOR_2 # key: value
+  masterNodeSelector: 
+    enable: false 
+    value: 
+      - MASTER_NODE_SELECTOR_1 # key: value
+      - MASTER_NODE_SELECTOR_2 # key: value
+  patroniNodeSelector: 
+    enable: false 
+    value: 
+      - PATRONI_NODE_SELECTOR_1 # key: value
+      - PATRONI_NODE_SELECTOR_2 # key: value
+  tolerations: 
+    enable: false 
+    value: 
+      - DS_TOLERATIONS_1 # key: value
+      - DS_TOLERATIONS_2 # key: value
+  kms: 
+    enable: false
+    value: "k8s/google/vault/ibmprotect"
+  kmsKeyring: 
+    enable: false
+    value:  "KEYRING_NAME"
+  ports: 
+    enable: false
+    serverRestPort: 
+      enable: false
+      value: "29442"
+  requests:
+    enable: false
+    cpu: 
+      enable: false
+      value: "2"
+    memory: 
+      enable: false
+      value: "2Gi"
+  limits: 
+    enable: false
+    cpu: 
+      enable: false
+      value: "2"
+    memory: 
+      enable: false 
+      value: "2Gi"
+    
