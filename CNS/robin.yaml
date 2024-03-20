@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/managed-by: robin.io
     app.kubernetes.io/name: robin
 spec:
-  image_robin: gcr.io/robinio-public/robin-storage/robinimg:5.4.8-276
+  image_robin: gcr.io/robinio-public/robin-storage/robinimg:5.4.8-275
   k8s_provider: gke # possible values openshift,eks,gke,aks,iks,rke,upstream
   host_type: physical # possible values physical,ec2,gcp,azure,ibm,anthos
   namespace: robinio

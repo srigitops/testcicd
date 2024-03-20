@@ -857,7 +857,7 @@ spec:
       containers:
         - name: robin-operator
           # Replace this with the built image name
-          image: gcr.io/robinio-public/robin-storage/robin-operator:5.4.8-276
+          image: gcr.io/robinio-public/robin-storage/robin-operator:5.4.8-275
           readinessProbe:
             exec:
               command:
