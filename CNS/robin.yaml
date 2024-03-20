@@ -61,7 +61,7 @@ spec:
     # cpu_limits: "CPU_LIMITS" # default 500m
     # memory_requests: "MEMORY_REQUESTS" # default 4G
     # memory_limits: "MEMORY_LIMITS" # default 4G
-    skip_postgres_operator: "1"
+    #skip_postgres_operator: "1"
   # storage_disks: STORAGE_DISKS
   # node_selector:
     # NODE_SELECTOR
