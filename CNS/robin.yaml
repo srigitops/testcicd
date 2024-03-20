@@ -25,7 +25,7 @@ spec:
     # robinds_dir: ROBINDS_DIR # Path where robin database will be storaed on the host, default: /home/robinds
     # cloud_cred_secret: CLOUD_CRED_SECRET
     # robin_devmode: "true"
-    generate_password: "true"
+    #generate_password: "true"
     # vault_addr: "VAULT_ADDR" # VAULT_CONFIG
     # vault_robin_keys_path: "VAULT_ROBIN_KEYS_PATH" # VAULT_CONFIG
     # vault_token: "VAULT_TOKEN" # VAULT_CONFIG
